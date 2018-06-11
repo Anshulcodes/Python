@@ -2,49 +2,62 @@ import random
 
 
 def keygen():
-    keyl= 'A'
-    keyh= 'z'
-    return random.randrange(ord(keyl),ord(keyh))
+    # key generator
+    keyl1 = 'A'
+    keyh1 = 'Z'
+    keyl2 = 'a'
+    keyh2 = 'z'
+    keyarray = []
+    key1 = random.randrange(ord(keyl1), ord(keyh1))
+    keyarray.append(key1)
+    key2 = random.randrange(ord(keyl2), ord(keyh2))
+    keyarray.append(key2)
+    key = random.choice(keyarray)
+    return key
+
 
 def protect():
-    shieldl= int(90)
-    shieldh= int(108)
-    return random.randrange(shieldl,shieldh)
+    # shield generator for the attack
+    shieldl = 90
+    shieldh = 108
+    return random.randrange(shieldl, shieldh)
     
+
 def destroy():
-    hp=500
-    gain=95
-    atkl=100
-    atkh=120
-    while hp >0:
-        key= str(chr(keygen()))
-        print('Press',key)
-        match= input()
-        if key== match:
-            gain= protect()
-            hp= hp + gain
-            print('Health gain is of',gain,'and the current health is',hp)
-        dmg= random.randrange(atkl,atkh)
-        hp= hp - dmg
-        print('Health of the player is',hp,'and the damage is',dmg)
+    # Attacking power
+    hp = 500  # initial health
+    atkl = 100
+    atkh = 120
+    while hp > 1:
+        key = str(chr(keygen()))
+        print('Press', key)
+        match = input()
+        if key == match:
+            gain = protect()
+            hp = hp + gain   # shield
+            print('Health gain is of', gain, 'and the current health is', hp)
+        dmg = random.randrange(atkl, atkh)
+        hp = hp - dmg
         if hp < 120:
-            print('You have been transferred to the rest room as your health is critically low.')
-        elif hp < 90:
-            print('You died')
-            break
+            if hp < 0:
+                hp = 0
+            elif hp > 0:
+                print('You have been transferred to the rest room as your health is critically low.')
+        print('Health of the player is', hp, 'and the damage is', dmg)
+        if hp == 0:
+            print('You died!')
     return hp
     
 
-card=[]
-a= True
-finalhp= destroy()
-card.append(finalhp)
-while a== True:
-    choice =str(input('Want to respawn? Y/N'))
+a = True
+b = 1
+finalhp = destroy()
+while a is True:
+    choice = str(input('Want to respawn? Y/N'))
     if choice == 'Y':
-        finalhp= destroy()
-        card.append(finalhp)
+        finalhp = destroy()
+        b = b + 1
     else:
         break
-print('The final scores are',card)
+print('Number of times game played: ', b)
 print('Hope you enjoyed!')
